@@ -1,0 +1,53 @@
+# 高频词与TF-IDF特征模式的切换方法
+
+在自然语言处理中，特征提取是文本分析的关键步骤之一。高频词和TF-IDF是两种常用的特征提取方法。根据具体需求，可以在这两种模式之间进行切换。
+
+## 1. 高频词特征模式
+
+高频词特征模式主要关注词在文档中的出现频率，通常用词频（TF）来表示。公式如下：
+
+$$\[
+\text{TF}(t, d) = \frac{\text{词 } t \text{ 在文档 } d \text{ 中出现的次数}}{\text{文档 } d \text{ 中的总词数}}
+\]$$
+
+其中：
+- \( t \) 表示词
+- \( d \) 表示文档
+
+## 2. TF-IDF特征模式
+
+TF-IDF特征模式综合考虑了词频（TF）和逆文档频率（IDF），公式如下：
+
+$$\[
+\text{TF-IDF}(t, d) = \text{TF}(t, d) \times \text{IDF}(t)
+\]$$
+
+其中：
+$$\[
+\text{TF}(t, d) = \frac{\text{词 } t \text{ 在文档 } d \text{ 中出现的次数}}{\text{文档 } d \text{ 中的总词数}}
+\]$$
+
+$$\[
+\text{IDF}(t) = \log \frac{\text{语料库文档总数}}{\text{包含词 } t \text{ 的文档数} + 1}
+\]$$
+
+## 3. 特征模式切换方法
+
+根据具体需求，可以选择使用高频词特征模式或TF-IDF特征模式。如果希望更关注词在文档中的出现频率，则使用高频词特征模式；如果希望综合考虑词的全局重要性，则使用TF-IDF特征模式。
+
+### 切换逻辑
+
+假设我们有一个函数 `switch_feature_mode(mode)`，用于在两种模式之间切换：
+
+```python
+def switch_feature_mode(mode):
+    if mode == "tf":
+        return lambda t, d: tf(t, d)
+    elif mode == "tfidf":
+        return lambda t, d: tf(t, d) * idf(t)
+    else:
+        raise ValueError("Invalid mode. Choose 'tf' or 'tfidf'.")
+
+# 示例
+mode = "tfidf"  # 或 "tf"
+feature_function = switch_feature_mode(mode)
